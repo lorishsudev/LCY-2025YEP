@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --lcy-yellow: #FFD700;
+  --lcy-dark: #1a202c;
+  --lcy-slate: #334155;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.text-lcy-yellow {
+  color: var(--lcy-yellow);
+}
+
+.bg-lcy-yellow {
+  background-color: var(--lcy-yellow);
+}
+
+.text-lcy-dark {
+  color: var(--lcy-dark);
+}
+
+.bg-lcy-dark {
+  background-color: var(--lcy-dark);
+}
+
+.text-lcy-slate {
+  color: var(--lcy-slate);
+}
+
+.bg-lcy-slate {
+  background-color: var(--lcy-slate);
+}
