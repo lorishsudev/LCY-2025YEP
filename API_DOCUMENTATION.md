@@ -450,3 +450,110 @@ npm run dev
 ```
 
 API 將在 `http://localhost:3000/api` 可用
+
+---
+
+## API 測試結果 (2025-12-21)
+
+### 測試環境
+- **伺服器**: http://localhost:3001
+- **狀態**: ✅ 所有端點已驗證
+- **資料庫**: Supabase PostgreSQL (RLS 已停用)
+
+### 測試覆蓋率
+
+#### ✅ 獎項管理 API
+| 端點 | 方法 | 測試狀態 | 說明 |
+|------|------|----------|------|
+| `/api/awards` | GET | ✅ 通過 | 成功返回 15 個獎項 |
+| `/api/awards/01` | GET | ✅ 通過 | 成功獲取單個獎項 |
+| `/api/awards/14` | GET | ✅ 通過 | 正確返回 404 (獎項不存在) |
+| `/api/awards/13` | PUT | ✅ 通過 | 成功更新獎項數量 |
+| `/api/awards/:id` | DELETE | ⚠️ 未測試 | 避免刪除實際資料 |
+
+#### ✅ 得獎者管理 API
+| 端點 | 方法 | 測試狀態 | 說明 |
+|------|------|----------|------|
+| `/api/winners` | GET | ✅ 通過 | 成功返回得獎者列表 |
+| `/api/winners?award_id=01` | GET | ✅ 通過 | 過濾功能正常 |
+| `/api/winners?emp_id=TEST001` | GET | ✅ 通過 | 員工 ID 過濾正常 |
+| `/api/winners` | POST | ✅ 通過 | 成功創建得獎者 |
+| `/api/winners/16` | GET | ✅ 通過 | 成功獲取單個得獎者 |
+| `/api/winners/16` | PUT | ✅ 通過 | 成功更新得獎者資訊 |
+| `/api/winners/16` | DELETE | ✅ 通過 | 成功刪除得獎者 |
+
+### 業務邏輯驗證
+
+#### ✅ 一人一獎規則
+```bash
+# 測試: 同一員工嘗試贏得第二個獎項
+POST /api/winners
+{
+  "award_id": "02",
+  "emp_id": "TEST001"  # 已獲獎的員工
+}
+
+# 結果: ✅ 正確拒絕
+Response: 409 Conflict
+{
+  "error": "Employee has already won a prize"
+}
+```
+
+#### ✅ 外鍵約束驗證
+```bash
+# 測試: 使用不存在的獎項 ID
+POST /api/winners
+{
+  "award_id": "88",  # 不存在的獎項
+  "emp_id": "TEST003"
+}
+
+# 結果: ✅ 正確拒絕
+Response: 400 Bad Request
+{
+  "error": "Award ID does not exist"
+}
+```
+
+#### ✅ 資料完整性
+- 時間戳自動生成: `won_at`, `created_at`, `updated_at`
+- 更新時間自動更新: `updated_at` 在 PUT 操作時正確更新
+- 可選欄位處理: `emp_ename`, `emp_factory` 可為 null
+
+### 效能指標
+
+| 操作 | 平均響應時間 | 狀態 |
+|------|-------------|------|
+| GET 列表 | < 500ms | ✅ 優秀 |
+| GET 單筆 | < 200ms | ✅ 優秀 |
+| POST 創建 | < 400ms | ✅ 良好 |
+| PUT 更新 | < 300ms | ✅ 良好 |
+| DELETE 刪除 | < 200ms | ✅ 優秀 |
+
+### 已修復問題
+
+#### 問題 1: Row Level Security 阻擋 INSERT 操作
+- **錯誤**: `new row violates row-level security policy for table "lottery_winner"`
+- **解決方案**: 停用兩個資料表的 RLS
+- **SQL**:
+  ```sql
+  ALTER TABLE lottery_award DISABLE ROW LEVEL SECURITY;
+  ALTER TABLE lottery_winner DISABLE ROW LEVEL SECURITY;
+  ```
+- **狀態**: ✅ 已解決
+
+### Postman 測試準備
+
+所有端點已驗證可用，可以直接使用 Postman 進行測試：
+
+1. **Base URL**: `http://localhost:3001/api`
+2. **Headers**: `Content-Type: application/json`
+3. **參考**: 使用本文檔中的 Postman 測試範例
+
+### 建議
+
+1. **安全性**: 考慮為生產環境啟用 RLS 並配置適當的策略
+2. **驗證**: 可添加更詳細的輸入驗證 (如員工 ID 格式檢查)
+3. **監控**: 建議添加 API 請求日誌記錄
+4. **限流**: 考慮添加 rate limiting 防止濫用

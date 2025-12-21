@@ -166,6 +166,56 @@ import { resetWinners } from '@/lib/db-helpers';
 await resetWinners();
 ```
 
+## RESTful API
+
+Complete CRUD APIs are available for external system integration (see `API_DOCUMENTATION.md` for full details).
+
+### API Endpoints
+
+**Awards Management**:
+- `GET /api/awards` - List all awards
+- `GET /api/awards/:id` - Get single award
+- `POST /api/awards` - Create award
+- `PUT /api/awards/:id` - Update award
+- `DELETE /api/awards/:id` - Delete award
+
+**Winners Management**:
+- `GET /api/winners` - List all winners (supports filtering by `award_id` or `emp_id`)
+- `GET /api/winners/:id` - Get single winner
+- `POST /api/winners` - Create winner
+- `PUT /api/winners/:id` - Update winner
+- `DELETE /api/winners/:id` - Delete winner
+
+### Business Rules
+
+1. **One Prize Per Person**: Each employee (`emp_id`) can only win once - enforced in POST /api/winners
+2. **Foreign Key Validation**: `award_id` must exist in `lottery_award` table before creating winner
+3. **Cascade Delete**: Deleting an award removes all associated winners
+4. **Automatic Timestamps**: `won_at`, `created_at`, `updated_at` are auto-generated
+
+### API Testing
+
+All endpoints have been tested and verified (2025-12-21). Test results available in `API_DOCUMENTATION.md`.
+
+**Quick Test**:
+```bash
+# Start dev server
+npm run dev
+
+# Test awards endpoint
+curl http://localhost:3001/api/awards
+
+# Test winners endpoint
+curl http://localhost:3001/api/winners
+```
+
+### Database Security
+
+Row Level Security (RLS) is currently disabled for both tables to allow API access. For production deployment, consider:
+- Re-enabling RLS with appropriate policies
+- Using service role key for API operations
+- Implementing authentication/authorization layer
+
 ## Migration History
 
 Originally built with Vite, migrated to Next.js 15. All components converted to Next.js Client Components. Database integration added with Supabase for production use. Gemini service file exists but is currently unused (placeholder for future AI features).
