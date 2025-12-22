@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { Prize } from '../types';
-import { Users, Search, Globe } from 'lucide-react';
+import { Users, Search } from 'lucide-react';
 
 interface DisplayBoardProps {
   prizes: Prize[];
@@ -58,14 +58,14 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
             <span className="text-xs font-bold text-gray-500 tracking-wide">YEAR END PARTY 2025</span>
           </div>
 
-          {/* Desktop Tabs */}
-          <div className="hidden md:flex items-center h-full gap-1">
+          {/* Tabs - Responsive for all screen sizes */}
+          <div className="flex items-center h-full gap-1 overflow-x-auto scrollbar-hide flex-1 justify-center">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  h-full px-5 text-sm font-bold transition-colors relative flex items-center
+                  h-full px-3 md:px-5 text-xs md:text-sm font-bold transition-colors relative flex items-center whitespace-nowrap
                   ${activeTab === tab.id ? 'text-lcy-dark bg-gray-50' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50/50'}
                 `}
               >
@@ -75,11 +75,6 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                 )}
               </button>
             ))}
-          </div>
-
-          <div className="flex items-center gap-4 text-gray-400">
-            <Globe size={18} className="hover:text-lcy-dark cursor-pointer transition-colors" />
-            <Search size={18} className="hover:text-lcy-dark cursor-pointer transition-colors" />
           </div>
         </div>
       </nav>
@@ -184,20 +179,23 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
       </main>
 
       {/* Corporate Footer - New Design */}
-      <footer className="relative bg-[#333333] h-28 overflow-hidden mt-auto">
+      <footer className="relative bg-[#333333] h-32 overflow-hidden mt-auto">
         {/* Yellow Diagonal Shape */}
-        <div 
-          className="absolute top-0 left-0 h-full w-[35%] bg-lcy-yellow" 
+        <div
+          className="absolute top-0 left-0 h-full w-[35%] bg-lcy-yellow"
           style={{ clipPath: 'polygon(0 0, 100% 0, 70% 100%, 0% 100%)' }}
         ></div>
-        
+
         {/* Content */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 h-full flex justify-end items-center">
             <div className="flex flex-col items-end">
                 <h2 className="text-xl font-black text-white tracking-tight leading-none mb-2">
                   LC<span style={{ fontSize: '1.2em' }}>y</span>
                 </h2>
-                <div className="w-full min-w-[300px] h-[1px] bg-gray-500"></div>
+                <div className="w-full min-w-[300px] h-[1px] bg-gray-500 mb-2"></div>
+                <p className="text-gray-400 text-xs font-light">
+                  © 2025 LCy All Rights Reserved.
+                </p>
             </div>
         </div>
       </footer>

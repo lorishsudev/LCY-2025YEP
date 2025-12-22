@@ -157,11 +157,22 @@ function getAwardDescription(awardName: string, rank: number): string {
 }
 
 /**
+ * Helper function to create instant-loading SVG voucher image
+ */
+function createVoucherSVG(amount: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+    <rect width="600" height="400" fill="#FFD700"/>
+    <text x="300" y="200" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#1a202c" text-anchor="middle" dominant-baseline="middle">${amount}</text>
+  </svg>`;
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+}
+
+/**
  * Helper function to get award image based on rank
  */
 function getAwardImage(rank: number): string {
   const images: Record<number, string> = {
-    0: 'https://placehold.co/600x400/FFD700/1a202c?text=%24100%2C000&font=raleway', // 特獎禮券 $100,000
+    0: createVoucherSVG('$100,000'), // 特獎禮券 $100,000
     1: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600&q=80', // SHARP 電視
     2: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80', // MacBook Air
     3: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80', // iPad Pro
@@ -170,13 +181,13 @@ function getAwardImage(rank: number): string {
     6: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80', // Nintendo Switch 2
     7: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&q=80', // Apple Watch
     8: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', // Dyson 空氣清淨機
-    9: 'https://placehold.co/600x400/FFD700/1a202c?text=%2410%2C000&font=raleway', // 9獎禮券 $10,000
+    9: createVoucherSVG('$10,000'), // 9獎禮券 $10,000
     10: 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=600&q=80', // 飛利浦氣炸鍋
-    11: 'https://placehold.co/600x400/FFD700/1a202c?text=%245%2C000&font=raleway', // 11獎禮券 $5,000
+    11: createVoucherSVG('$5,000'), // 11獎禮券 $5,000
     12: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80', // Panasonic 吹風機
     13: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // AirPods 4
-    99: 'https://placehold.co/600x400/FFD700/1a202c?text=%243%2C000&font=raleway', // 溫馨獎禮券 $3,000
+    99: createVoucherSVG('$3,000'), // 溫馨獎禮券 $3,000
   };
 
-  return images[rank] || 'https://placehold.co/600x400/94a3b8/1e293b?text=Prize&font=raleway';
+  return images[rank] || createVoucherSVG('Prize');
 }
