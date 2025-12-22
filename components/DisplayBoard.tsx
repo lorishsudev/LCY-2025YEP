@@ -46,10 +46,10 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-lcy-slate font-sans flex flex-col">
-      
-      {/* Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <div className="min-h-screen bg-slate-50 text-lcy-slate font-sans">
+
+      {/* Navigation Bar - Fixed positioning for Safari compatibility */}
+      <nav className="bg-white border-b border-gray-200 fixed top-0 left-0 right-0 z-50 shadow-sm">
         {/* Desktop Layout - 保持不變 */}
         <div className="hidden md:flex max-w-7xl mx-auto px-4 h-16 items-center justify-between">
           {/* Logo Area */}
@@ -125,6 +125,9 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
           </div>
         </div>
       </nav>
+
+      {/* Spacer for fixed navigation - Different heights for mobile/desktop */}
+      <div className="h-[120px] md:h-16"></div>
 
       {/* Hero / Title Section */}
       <header className="bg-white py-6 px-4 text-center border-b border-gray-100">
