@@ -49,8 +49,9 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     <div className="min-h-screen bg-slate-50 text-lcy-slate font-sans flex flex-col">
       
       {/* Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm h-16">
-        <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        {/* Desktop Layout - 保持不變 */}
+        <div className="hidden md:flex max-w-7xl mx-auto px-4 h-16 items-center justify-between">
           {/* Logo Area */}
           <div className="flex items-center gap-2">
             <span className="text-2xl font-black tracking-tighter text-lcy-dark">LCy</span>
@@ -58,14 +59,14 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
             <span className="text-xs font-bold text-gray-500 tracking-wide">YEAR END PARTY 2025</span>
           </div>
 
-          {/* Tabs - Responsive for all screen sizes */}
-          <div className="flex items-center h-full gap-1 overflow-x-auto scrollbar-hide flex-1 justify-center">
+          {/* Desktop Tabs */}
+          <div className="flex items-center h-full gap-1">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  h-full px-3 md:px-5 text-xs md:text-sm font-bold transition-colors relative flex items-center whitespace-nowrap
+                  h-full px-5 text-sm font-bold transition-colors relative flex items-center
                   ${activeTab === tab.id ? 'text-lcy-dark bg-gray-50' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50/50'}
                 `}
               >
@@ -75,6 +76,52 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                 )}
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* Mobile Layout - 兩排按鈕設計 */}
+        <div className="md:hidden px-3 py-3">
+          {/* Logo */}
+          <div className="flex items-center gap-2 mb-3 justify-center">
+            <span className="text-lg font-black tracking-tighter text-lcy-dark">LCy</span>
+            <div className="h-4 w-[1px] bg-gray-300 mx-1"></div>
+            <span className="text-[10px] font-bold text-gray-500 tracking-wide">YEAR END PARTY 2025</span>
+          </div>
+
+          {/* Mobile Tabs - 兩排網格布局 */}
+          <div className="grid grid-cols-3 gap-2">
+            {/* 第一排：3 個按鈕 */}
+            {tabs.slice(0, 3).map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`
+                  px-2 py-2.5 text-[11px] font-bold rounded-md transition-all relative
+                  ${activeTab === tab.id
+                    ? 'bg-lcy-yellow text-lcy-dark shadow-sm'
+                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200 active:scale-95'}
+                `}
+              >
+                {tab.label}
+              </button>
+            ))}
+
+            {/* 第二排：2 個按鈕 + 1 個空位 */}
+            {tabs.slice(3, 5).map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`
+                  px-2 py-2.5 text-[11px] font-bold rounded-md transition-all relative
+                  ${activeTab === tab.id
+                    ? 'bg-lcy-yellow text-lcy-dark shadow-sm'
+                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200 active:scale-95'}
+                `}
+              >
+                {tab.label}
+              </button>
+            ))}
+            <div></div> {/* 空位保持對齊 */}
           </div>
         </div>
       </nav>
