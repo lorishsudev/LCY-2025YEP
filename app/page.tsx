@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Prize } from '../types';
 import { DisplayBoard } from '../components/DisplayBoard';
 import { fetchPrizesWithWinners } from '../lib/db-helpers';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 // Fallback mock data (used when database is not configured)
 const FALLBACK_PRIZES: Prize[] = [
@@ -148,7 +149,58 @@ export default function Home() {
       }
     };
 
+    // Initial load
     loadPrizes();
+
+    // Setup realtime subscriptions only if Supabase is configured
+    if (isSupabaseConfigured && supabase) {
+      console.log('🔴 Setting up Realtime subscriptions...');
+
+      // Subscribe to lottery_award changes
+      const awardsChannel = supabase
+        .channel('lottery-award-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*', // Listen to INSERT, UPDATE, DELETE
+            schema: 'public',
+            table: 'lottery_award'
+          },
+          (payload) => {
+            console.log('📢 Award change detected:', payload);
+            loadPrizes(); // Reload all prizes when award changes
+          }
+        )
+        .subscribe((status) => {
+          console.log('Awards channel status:', status);
+        });
+
+      // Subscribe to lottery_winner changes
+      const winnersChannel = supabase
+        .channel('lottery-winner-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*', // Listen to INSERT, UPDATE, DELETE
+            schema: 'public',
+            table: 'lottery_winner'
+          },
+          (payload) => {
+            console.log('🏆 Winner change detected:', payload);
+            loadPrizes(); // Reload all prizes when winner changes
+          }
+        )
+        .subscribe((status) => {
+          console.log('Winners channel status:', status);
+        });
+
+      // Cleanup subscriptions on unmount
+      return () => {
+        console.log('🔴 Cleaning up Realtime subscriptions...');
+        supabase.removeChannel(awardsChannel);
+        supabase.removeChannel(winnersChannel);
+      };
+    }
   }, []);
 
   if (loading) {

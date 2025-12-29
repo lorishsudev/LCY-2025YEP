@@ -22,6 +22,10 @@
 - `PUT /api/winners/:id` - 更新得獎者
 - `DELETE /api/winners/:id` - 刪除得獎者
 
+### 批量操作 (Batch Operations)
+- `POST /api/winners/batch` - 批量新增得獎者
+- `DELETE /api/winners/batch?award_id=XX` - 批量刪除得獎者 (依獎項ID)
+
 ---
 
 ## 獎項管理 API
@@ -361,6 +365,196 @@ DELETE /api/winners/:id
   "message": "Winner deleted successfully"
 }
 ```
+
+---
+
+## 批量操作 API
+
+### 1. 批量新增得獎者
+
+```http
+POST /api/winners/batch
+```
+
+**Request Body**
+```json
+{
+  "winners": [
+    {
+      "award_id": "03",
+      "award": "3獎 Apple iPad Pro M4 11吋",
+      "emp_id": "A00099999",
+      "emp_cname": "王小明",
+      "emp_ename": "Wang Xiao Ming",
+      "emp_factory": "台北總部"
+    },
+    {
+      "award_id": "03",
+      "award": "3獎 Apple iPad Pro M4 11吋",
+      "emp_id": "A00099998",
+      "emp_cname": "李小華",
+      "emp_factory": "高雄廠"
+    }
+  ]
+}
+```
+
+**Required Fields (每筆資料)**
+- `award_id` (string) - 獎項ID
+- `award` (string) - 獎項名稱
+- `emp_id` (string) - 員工ID
+
+**Optional Fields (每筆資料)**
+- `emp_cname` (string) - 員工中文姓名
+- `emp_ename` (string) - 員工英文姓名
+- `emp_factory` (string) - 部門/廠區
+
+**Response 201 Created** (部分或全部成功)
+```json
+{
+  "success": true,
+  "data": {
+    "total": 2,
+    "created": 2,
+    "failed": 0,
+    "results": [
+      {
+        "emp_id": "A00099999",
+        "status": "created",
+        "data": {
+          "id": 20,
+          "award_id": "03",
+          "award": "3獎 Apple iPad Pro M4 11吋",
+          "emp_id": "A00099999",
+          "emp_cname": "王小明",
+          "emp_ename": "Wang Xiao Ming",
+          "emp_factory": "台北總部",
+          "won_at": "2025-12-29T12:00:00.000Z"
+        }
+      },
+      {
+        "emp_id": "A00099998",
+        "status": "created",
+        "data": {
+          "id": 21,
+          "award_id": "03",
+          "award": "3獎 Apple iPad Pro M4 11吋",
+          "emp_id": "A00099998",
+          "emp_cname": "李小華",
+          "emp_factory": "高雄廠",
+          "won_at": "2025-12-29T12:00:01.000Z"
+        }
+      }
+    ]
+  },
+  "message": "Batch operation completed: 2 created, 0 failed"
+}
+```
+
+**Response 400 Bad Request** (全部失敗)
+```json
+{
+  "success": false,
+  "data": {
+    "total": 2,
+    "created": 0,
+    "failed": 2,
+    "results": [
+      {
+        "emp_id": "A00099999",
+        "status": "duplicate",
+        "error": "Employee has already won a prize"
+      },
+      {
+        "emp_id": "A00099998",
+        "status": "invalid_award",
+        "error": "Award ID 99 does not exist"
+      }
+    ]
+  },
+  "message": "Batch operation completed: 0 created, 2 failed"
+}
+```
+
+**狀態類型說明**
+- `created` - 成功創建
+- `failed` - 創建失敗 (系統錯誤)
+- `duplicate` - 員工已經得獎 (違反一人一獎規則)
+- `invalid_award` - 獎項ID不存在
+
+**特性**
+- ✅ 自動驗證所有獎項ID是否存在 (批量查詢優化)
+- ✅ 自動檢查重複得獎 (批量查詢優化)
+- ✅ 部分成功處理：即使部分資料失敗，成功的資料仍會被建立
+- ✅ 詳細結果回報：每筆資料的處理狀態和錯誤訊息
+- ✅ 交易安全：同一批次中避免重複員工ID
+
+---
+
+### 2. 批量刪除得獎者 (依獎項ID)
+
+```http
+DELETE /api/winners/batch?award_id=03
+```
+
+**Query Parameters**
+- `award_id` (string, required) - 要刪除得獎者的獎項ID
+
+**Response 200 OK** (成功刪除)
+```json
+{
+  "success": true,
+  "data": {
+    "deleted": 5,
+    "award_id": "03",
+    "winners": [
+      {
+        "id": 10,
+        "emp_id": "A00099999",
+        "emp_cname": "王小明"
+      },
+      {
+        "id": 11,
+        "emp_id": "A00099998",
+        "emp_cname": "李小華"
+      }
+    ]
+  },
+  "message": "Successfully deleted 5 winner(s) for award 03"
+}
+```
+
+**Response 200 OK** (沒有找到得獎者)
+```json
+{
+  "success": true,
+  "data": {
+    "deleted": 0,
+    "award_id": "03"
+  },
+  "message": "No winners found for award 03"
+}
+```
+
+**Response 404 Not Found** (獎項不存在)
+```json
+{
+  "error": "Award ID 03 does not exist"
+}
+```
+
+**Response 400 Bad Request** (缺少參數)
+```json
+{
+  "error": "Missing required parameter: award_id"
+}
+```
+
+**特性**
+- ✅ 刪除前驗證獎項是否存在
+- ✅ 返回被刪除的得獎者列表
+- ✅ 原子操作：所有記錄一起刪除或一起失敗
+- ✅ 支援刪除0筆記錄（不報錯）
 
 ---
 
