@@ -197,8 +197,10 @@ export default function Home() {
       // Cleanup subscriptions on unmount
       return () => {
         console.log('🔴 Cleaning up Realtime subscriptions...');
-        supabase.removeChannel(awardsChannel);
-        supabase.removeChannel(winnersChannel);
+        if (supabase) {
+          supabase.removeChannel(awardsChannel);
+          supabase.removeChannel(winnersChannel);
+        }
       };
     }
   }, []);
