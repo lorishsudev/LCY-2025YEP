@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Prize, Winner } from '../types';
-import { Users, Search } from 'lucide-react';
+import { Users, Search, Trophy } from 'lucide-react';
 
 interface DisplayBoardProps {
   prizes: Prize[];
@@ -10,6 +10,12 @@ interface DisplayBoardProps {
 }
 
 type TabType = 'special-top' | '1-5' | '6-10' | '11-13' | 'comfort';
+
+interface SearchResult {
+  winner: Winner;
+  prize: Prize;
+  winnerId: string; // Unique ID for scrolling
+}
 
 // Function to mask middle characters of a name (only Chinese name part, preserve employee ID)
 const maskName = (fullName: string): string => {
@@ -36,6 +42,8 @@ const maskName = (fullName: string): string => {
 
 export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   // Sort by rank (0 is highest, then 1-13, then 99)
   const sortedPrizes = useMemo(() => [...prizes].sort((a, b) => a.rank - b.rank), [prizes]);
@@ -58,6 +66,54 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     return winner.name.toLowerCase().includes(query) ||
            winner.department.toLowerCase().includes(query) ||
            winner.id.toLowerCase().includes(query);
+  };
+
+  // Calculate search results with prize information
+  const searchResults = useMemo<SearchResult[]>(() => {
+    if (!searchQuery.trim()) return [];
+
+    const results: SearchResult[] = [];
+    sortedPrizes.forEach((prize) => {
+      prize.winners.forEach((winner) => {
+        if (isWinnerMatch(winner)) {
+          results.push({
+            winner,
+            prize,
+            winnerId: `winner-${prize.id}-${winner.id}`,
+          });
+        }
+      });
+    });
+    return results;
+  }, [searchQuery, sortedPrizes]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Scroll to specific winner
+  const scrollToWinner = (winnerId: string) => {
+    const element = document.getElementById(winnerId);
+    if (element) {
+      const navHeight = window.innerWidth >= 768 ? 196 : 320;
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - navHeight - 20; // Extra 20px padding
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+
+      setShowResults(false); // Close dropdown after scrolling
+    }
   };
 
   // Scroll to section
@@ -162,23 +218,91 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
              創新永續，共創未來。感謝每一位夥伴的傑出貢獻。
            </p>
 
-           {/* Search Input */}
-           <div className="max-w-md mx-auto relative">
-             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+           {/* Search Input with Dropdown Results */}
+           <div className="max-w-md mx-auto relative" ref={searchRef}>
+             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 z-10" />
              <input
                type="text"
-               placeholder="搜尋得獎者姓名、工號、廠別，搜尋後會標示黃色背景，請下拉找尋"
+               placeholder="搜尋得獎者姓名、工號或廠別"
                value={searchQuery}
-               onChange={(e) => setSearchQuery(e.target.value)}
-               className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lcy-yellow focus:border-transparent text-sm"
+               onChange={(e) => {
+                 setSearchQuery(e.target.value);
+                 setShowResults(true);
+               }}
+               onFocus={() => searchQuery && setShowResults(true)}
+               className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lcy-yellow focus:border-transparent text-sm"
              />
              {searchQuery && (
                <button
-                 onClick={() => setSearchQuery('')}
-                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                 onClick={() => {
+                   setSearchQuery('');
+                   setShowResults(false);
+                 }}
+                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 z-10"
                >
                  ✕
                </button>
+             )}
+
+             {/* Search Results Dropdown */}
+             {showResults && searchQuery && (
+               <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-[40vh] md:max-h-[300px] overflow-y-auto">
+                 {searchResults.length > 0 ? (
+                   <>
+                     {/* Results Summary */}
+                     <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
+                       <p className="text-xs font-medium text-gray-600">
+                         找到 <span className="text-lcy-yellow font-bold">{searchResults.length}</span> 筆結果
+                       </p>
+                     </div>
+
+                     {/* Results List */}
+                     <div className="py-1">
+                       {searchResults.map((result, index) => (
+                         <button
+                           key={result.winnerId}
+                           onClick={() => scrollToWinner(result.winnerId)}
+                           className="w-full px-4 py-3 text-left hover:bg-lcy-yellow/10 transition-colors border-b border-gray-100 last:border-b-0 flex items-start gap-3 group"
+                         >
+                           {/* Prize Icon */}
+                           <div className="shrink-0 mt-0.5">
+                             <Trophy className="w-4 h-4 text-lcy-yellow" />
+                           </div>
+
+                           {/* Winner Info */}
+                           <div className="flex-1 min-w-0">
+                             <div className="flex items-baseline gap-2 mb-1">
+                               <span className="text-xs font-bold text-gray-400 uppercase">
+                                 {result.prize.name}
+                               </span>
+                             </div>
+                             <div className="font-bold text-sm text-lcy-dark group-hover:text-lcy-yellow transition-colors">
+                               {maskName(result.winner.name)}
+                             </div>
+                             <div className="text-xs text-gray-500 mt-0.5">
+                               {result.winner.department}
+                             </div>
+                           </div>
+
+                           {/* Arrow Indicator */}
+                           <div className="shrink-0 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                             <svg className="w-4 h-4 text-lcy-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                             </svg>
+                           </div>
+                         </button>
+                       ))}
+                     </div>
+                   </>
+                 ) : (
+                   /* No Results */
+                   <div className="px-4 py-8 text-center">
+                     <Search className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+                     <p className="text-sm text-gray-500">查無相關得獎者</p>
+                     <p className="text-xs text-gray-400 mt-1">請嘗試其他關鍵字</p>
+                   </div>
+                 )}
+               </div>
              )}
            </div>
         </div>
@@ -249,9 +373,11 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                             {prize.winners.map((winner) => {
                               const isHighlighted = isWinnerMatch(winner);
+                              const winnerId = `winner-${prize.id}-${winner.id}`;
                               return (
                                 <div
                                   key={winner.id}
+                                  id={winnerId}
                                   className={`flex flex-col gap-1 rounded px-3 py-3 transition-all ${
                                     isHighlighted
                                       ? 'bg-lcy-yellow border-2 border-lcy-yellow shadow-md'
