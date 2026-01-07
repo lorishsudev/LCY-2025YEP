@@ -384,11 +384,11 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                                       : 'bg-gray-50 border border-gray-100 hover:border-lcy-yellow/50'
                                   }`}
                                 >
-                                  <div className="font-bold text-lcy-dark text-xl leading-tight">
-                                    {maskName(winner.name)}
+                                  <div className="font-bold text-lcy-dark text-base leading-tight">
+                                    {winner.department} {maskName(winner.name)}
                                   </div>
                                   <div className="text-sm text-gray-500 font-medium">
-                                    {winner.department}
+                                    {prize.name}
                                   </div>
                                 </div>
                               );
