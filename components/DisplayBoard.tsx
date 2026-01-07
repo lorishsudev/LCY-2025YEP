@@ -385,7 +385,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                                   }`}
                                 >
                                   <div className="font-bold text-lcy-dark text-base leading-tight">
-                                    {winner.department} {maskName(winner.name)}
+                                    {maskName(winner.name)} {winner.department} 
                                   </div>
                                   <div className="text-sm text-gray-500 font-medium">
                                     {prize.name}
