@@ -9,7 +9,7 @@ interface DisplayBoardProps {
   lastWinnerId: string | null;
 }
 
-type TabType = 'special-top' | '1-5' | '6-10' | '11-13' | 'comfort';
+type TabType = 'special-top' | '2-5' | '6-10' | '11-13' | 'bonus';
 
 interface SearchResult {
   winner: Winner;
@@ -52,10 +52,10 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
   const prizeGroups = useMemo(() => {
     return {
       'special-top': sortedPrizes.filter(p => p.rank === 0 || p.rank === 1),
-      '1-5': sortedPrizes.filter(p => p.rank >= 2 && p.rank <= 5),
-      '6-10': sortedPrizes.filter(p => p.rank >= 6 && p.rank <= 10),
-      '11-13': sortedPrizes.filter(p => p.rank >= 11 && p.rank <= 13),
-      'comfort': sortedPrizes.filter(p => p.rank === 99),
+      '2-5': sortedPrizes.filter(p => p.rank >= 2 && p.rank <= 5),
+      '6-10': sortedPrizes.filter(p => p.rank >= 6 && p.rank <= 13),
+      '11-13': sortedPrizes.filter(p => p.rank >= 14 && p.rank <= 19),
+      'bonus': sortedPrizes.filter(p => p.rank >= 95 && p.rank <= 99),
     };
   }, [sortedPrizes]);
 
@@ -134,10 +134,10 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
 
   const tabs: { id: TabType; label: string }[] = [
     { id: 'special-top', label: '特獎/頭獎' },
-    { id: '1-5', label: '2-5 獎' },
+    { id: '2-5', label: '2-5 獎' },
     { id: '6-10', label: '6-10 獎' },
     { id: '11-13', label: '11-13 獎' },
-    { id: 'comfort', label: '溫馨獎' },
+    { id: 'bonus', label: '加碼獎' },
   ];
 
   return (

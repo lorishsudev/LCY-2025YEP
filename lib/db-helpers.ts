@@ -143,8 +143,8 @@ export async function resetWinners(): Promise<boolean> {
  */
 function convertAwardIdToRank(awardId: string): number {
   const idNum = parseInt(awardId, 10);
-  if (awardId === '99') return 99; // 溫馨獎
   if (awardId === '00') return 0; // 特獎
+  if (idNum >= 95 && idNum <= 99) return idNum; // 加碼獎 (95-99)
   return idNum;
 }
 
@@ -178,15 +178,25 @@ function getAwardImage(rank: number): string {
     3: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80', // iPad Pro
     4: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80', // iPhone 17
     5: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600&q=80', // ECOVACS 掃地機器人
-    6: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80', // Nintendo Switch 2
-    7: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&q=80', // Apple Watch
-    8: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', // Dyson 空氣清淨機
-    9: createVoucherSVG('$10,000'), // 9獎禮券 $10,000
-    10: 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=600&q=80', // 飛利浦氣炸鍋
-    11: createVoucherSVG('$5,000'), // 11獎禮券 $5,000
-    12: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80', // Panasonic 吹風機
-    13: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // AirPods 4
-    99: createVoucherSVG('$3,000'), // 溫馨獎禮券 $3,000
+    6: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80', // Nintendo Switch 2 (6獎-1)
+    7: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80', // Nintendo Switch 2 (6獎-2)
+    8: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&q=80', // Apple Watch (7獎)
+    9: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', // Dyson 空氣清淨機 (8獎)
+    10: createVoucherSVG('$10,000'), // 9獎-1 禮券 $10,000
+    11: createVoucherSVG('$10,000'), // 9獎-2 禮券 $10,000
+    12: createVoucherSVG('$10,000'), // 9獎-3 禮券 $10,000
+    13: 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=600&q=80', // 飛利浦氣炸鍋 (10獎)
+    14: createVoucherSVG('$5,000'), // 11獎-1 禮券 $5,000
+    15: createVoucherSVG('$5,000'), // 11獎-2 禮券 $5,000
+    16: createVoucherSVG('$5,000'), // 11獎-3 禮券 $5,000
+    17: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80', // Panasonic 吹風機 (12獎-1)
+    18: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80', // Panasonic 吹風機 (12獎-2)
+    19: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // AirPods 4 (13獎)
+    95: createVoucherSVG('$10,000'), // 總裁現金加碼獎 禮券 $10,000
+    96: createVoucherSVG('$3,000'), // 加碼獎-1 禮券 $3,000
+    97: createVoucherSVG('$3,000'), // 加碼獎-2 禮券 $3,000
+    98: createVoucherSVG('$3,000'), // 加碼獎-3 禮券 $3,000
+    99: createVoucherSVG('$3,000'), // 加碼獎-4 禮券 $3,000
   };
 
   return images[rank] || createVoucherSVG('Prize');
