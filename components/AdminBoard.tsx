@@ -3,13 +3,14 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Prize, Winner } from '../types';
 import { Users, Search, Trophy } from 'lucide-react';
+import { ExportExcel } from './ExportExcel';
 
 interface DisplayBoardProps {
   prizes: Prize[];
   lastWinnerId: string | null;
 }
 
-type TabType = 'special-top' | '2-5' | '6-10' | '11-13';
+type TabType = 'special-top' | '2-5' | '6-10' | '11-13' | 'bonus';
 
 interface SearchResult {
   winner: Winner;
@@ -40,7 +41,7 @@ const maskName = (fullName: string): string => {
   return idPart ? `${maskedName} ${idPart}` : maskedName;
 };
 
-export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
+export const AdminBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -55,6 +56,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
       '2-5': sortedPrizes.filter(p => p.rank >= 2 && p.rank <= 5),
       '6-10': sortedPrizes.filter(p => p.rank >= 6 && p.rank <= 13),
       '11-13': sortedPrizes.filter(p => p.rank >= 14 && p.rank <= 19),
+      'bonus': sortedPrizes.filter(p => p.rank >= 95 && p.rank <= 99),
     };
   }, [sortedPrizes]);
 
@@ -136,6 +138,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     { id: '2-5', label: '2-5 獎' },
     { id: '6-10', label: '6-10 獎' },
     { id: '11-13', label: '11-13 獎' },
+    { id: 'bonus', label: '加碼獎' },
   ];
 
   return (
@@ -188,8 +191,8 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
               </button>
             ))}
 
-            {/* 第二排：1 個按鈕 + 2 個空位 */}
-            {tabs.slice(3, 4).map((tab) => (
+            {/* 第二排：2 個按鈕 + 1 個空位 */}
+            {tabs.slice(3, 5).map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => scrollToSection(tab.id)}
@@ -198,7 +201,6 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                 {tab.label}
               </button>
             ))}
-            <div></div> {/* 空位保持對齊 */}
             <div></div> {/* 空位保持對齊 */}
           </div>
         </div>
@@ -216,6 +218,11 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
            <p className="text-gray-500 text-sm max-w-2xl mx-auto leading-relaxed font-light">
              創新永續，共創未來。感謝每一位夥伴的傑出貢獻。
            </p>
+
+           {/* Export Excel Button */}
+           <div className="flex justify-center">
+             <ExportExcel prizes={prizes} />
+           </div>
 
            {/* Search Input with Dropdown Results */}
            <div className="max-w-md mx-auto relative" ref={searchRef}>
