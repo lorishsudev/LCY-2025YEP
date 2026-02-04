@@ -191,7 +191,8 @@ function getAwardImage(rank: number): string {
     16: createVoucherSVG('$5,000'), // 11獎-3 禮券 $5,000
     17: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80', // Panasonic 吹風機 (12獎-1)
     18: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80', // Panasonic 吹風機 (12獎-2)
-    19: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // AirPods 4 (13獎)
+    19: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // AirPods 4 (13獎-1)
+    20: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // AirPods 4 (13獎-2)
     95: createVoucherSVG('$10,000'), // 總裁現金加碼獎 禮券 $10,000
     96: createVoucherSVG('$3,000'), // 加碼獎-1 禮券 $3,000
     97: createVoucherSVG('$3,000'), // 加碼獎-2 禮券 $3,000
