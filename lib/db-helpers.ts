@@ -48,6 +48,7 @@ export async function fetchPrizesWithWinners(): Promise<Prize[]> {
         description: getAwardDescription(award.award, rank),
         image: getAwardImage(rank),
         totalCount: award.num,
+        unitPrice: award.unit_price,
         rank,
         winners: awardWinners,
       };

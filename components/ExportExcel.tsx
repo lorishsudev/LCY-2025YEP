@@ -16,7 +16,7 @@ export const ExportExcel: React.FC<ExportExcelProps> = ({ prizes }) => {
     const data: any[] = [];
 
     // 添加標題行
-    data.push(['獎項ID', '獎項名稱', '總數量', '已抽出', '員工工號', '員工姓名', '員工廠別', '中獎時間']);
+    data.push(['獎項ID', '獎項名稱', '總數量', '單價', '已抽出', '員工工號', '員工姓名', '員工廠別', '中獎時間']);
 
     // 按 rank 排序獎項
     const sortedPrizes = [...prizes].sort((a, b) => a.rank - b.rank);
@@ -30,6 +30,7 @@ export const ExportExcel: React.FC<ExportExcelProps> = ({ prizes }) => {
             prize.id, // 獎項ID
             prize.name, // 獎項名稱
             prize.totalCount, // 總數量
+            prize.unitPrice, // 單價
             prize.winners.length, // 已抽出數量
             winner.id, // 員工工號
             winner.name, // 員工姓名
@@ -52,6 +53,7 @@ export const ExportExcel: React.FC<ExportExcelProps> = ({ prizes }) => {
           prize.id,
           prize.name,
           prize.totalCount,
+          prize.unitPrice,
           0,
           '-',
           '尚未抽出',
@@ -69,6 +71,7 @@ export const ExportExcel: React.FC<ExportExcelProps> = ({ prizes }) => {
       { wch: 10 },  // 獎項ID
       { wch: 50 },  // 獎項名稱
       { wch: 10 },  // 總數量
+      { wch: 12 },  // 單價
       { wch: 10 },  // 已抽出
       { wch: 15 },  // 員工工號
       { wch: 25 },  // 員工姓名

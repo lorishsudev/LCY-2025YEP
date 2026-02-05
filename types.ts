@@ -14,6 +14,7 @@ export interface Prize {
   description: string;
   image: string;
   totalCount: number;
+  unitPrice: number;
   winners: Winner[];
   rank: number; // 1 is highest (Grand Prize), higher numbers are lower prizes
 }
