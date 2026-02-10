@@ -9,7 +9,7 @@ interface DisplayBoardProps {
   lastWinnerId: string | null;
 }
 
-type TabType = 'special-top' | '2-5' | '6-10' | '11-13';
+type TabType = 'special-top' | '2-5' | '6-10' | '11-13' | 'bonus';;
 
 interface SearchResult {
   winner: Winner;
@@ -137,6 +137,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     { id: '2-5', label: '2-5 獎' },
     { id: '6-10', label: '6-10 獎' },
     { id: '11-13', label: '11-13 獎' },
+    { id: 'bonus', label: '溫馨獎' },
   ];
 
   return (
@@ -189,8 +190,8 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
               </button>
             ))}
 
-            {/* 第二排：1 個按鈕 + 2 個空位 */}
-            {tabs.slice(3, 4).map((tab) => (
+            {/* 第二排：2 個按鈕 + 1 個空位 */}
+            {tabs.slice(3, 5).map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => scrollToSection(tab.id)}
@@ -199,7 +200,6 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                 {tab.label}
               </button>
             ))}
-            <div></div> {/* 空位保持對齊 */}
             <div></div> {/* 空位保持對齊 */}
           </div>
         </div>
