@@ -210,7 +210,9 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
 
       {/* Hero / Title Section - Fixed at top（2026 主視覺：榮聚新勢・催化未來） */}
       <header className="yep-hero py-4 md:py-5 px-4 text-center fixed top-[146px] md:top-16 left-0 right-0 z-40 shadow-lg shadow-blue-900/30">
-        <div className="yep-hero-grid" aria-hidden="true"></div>
+        <div className="yep-hero-bg" aria-hidden="true">
+          <div className="yep-hero-grid"></div>
+        </div>
         <div className="relative max-w-4xl mx-auto">
            {/* 李長榮集團 · 2026 年終尾牙盛會 */}
            <div className="flex items-center justify-center gap-3 text-[11px] md:text-sm font-semibold tracking-[0.3em] text-blue-100">
@@ -361,12 +363,9 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
 
                          {/* Content */}
                          <div className="relative z-10 text-white">
-                            <h3 className="text-lg font-bold leading-tight mb-1 drop-shadow-sm">
+                            <h3 className="text-lg font-bold leading-tight mb-3 drop-shadow-sm">
                               {prize.name}
                             </h3>
-                            <p className="text-gray-300 text-xs font-light line-clamp-2 mb-3">
-                              {prize.description}
-                            </p>
 
                             <div className="flex items-center gap-4 text-xs font-bold tracking-wider">
                               <div className="flex items-baseline gap-1">
