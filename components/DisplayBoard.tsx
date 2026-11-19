@@ -208,7 +208,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
       {/* Spacer for fixed navigation - Different heights for mobile/desktop */}
       <div className="h-[146px] md:h-16"></div>
 
-      {/* Hero / Title Section - Fixed at top（2026 主視覺：榮聚新勢・催化未來） */}
+      {/* Hero / Title Section - Fixed at top（2026 主視覺：榮聚先新・催化未來） */}
       <header className="yep-hero py-4 md:py-5 px-4 text-center fixed top-[146px] md:top-16 left-0 right-0 z-40 shadow-lg shadow-blue-900/30">
         <div className="yep-hero-bg" aria-hidden="true">
           <div className="yep-hero-grid"></div>
@@ -223,7 +223,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
 
            {/* 主標題 */}
            <h1 className="mt-1.5 md:mt-2 text-[28px] leading-tight md:text-5xl">
-             <span className="yep-title">榮聚新勢・催化未來</span>
+             <span className="yep-title">榮聚先新・催化未來</span>
            </h1>
            <div className="yep-flare w-40 md:w-64 mx-auto mt-1" aria-hidden="true"></div>
 
