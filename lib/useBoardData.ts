@@ -3,10 +3,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { Prize } from '../types';
 
-const POLL_MS = 5000; // 正常輪詢間隔
-const POLL_JITTER_MS = 1000; // 隨機錯開，避免所有手機同一瞬間打 API
-const MAX_BACKOFF_MS = 15000; // 連續失敗時最長的重試間隔
+const POLL_MS = 10000; // 正常輪詢間隔（同一公司網路 IP 的請求量減半，降低觸發 Vercel 自動防護的機率）
+const POLL_JITTER_MS = 2000; // 隨機錯開，避免所有手機同一瞬間打 API
+const MAX_BACKOFF_MS = 30000; // 連續失敗時最長的重試間隔
 const REQUEST_TIMEOUT_MS = 10000; // 單次請求逾時
+
+// Vercel 自動防護（System Mitigations）對某個 IP 啟動 challenge 時，背景 fetch 會收到 403，
+// 且無法自行通過驗證；需要重新載入頁面讓瀏覽器完成 JavaScript 驗證。
+const CHALLENGE_RELOAD_KEY = 'board:lastChallengeReload';
+const CHALLENGE_RELOAD_MIN_INTERVAL_MS = 60000; // 最多每 60 秒自動重新載入一次
+
+function reloadForChallenge(): boolean {
+  try {
+    const last = Number(sessionStorage.getItem(CHALLENGE_RELOAD_KEY) || 0);
+    if (Date.now() - last < CHALLENGE_RELOAD_MIN_INTERVAL_MS) return false;
+    sessionStorage.setItem(CHALLENGE_RELOAD_KEY, String(Date.now()));
+  } catch {
+    // sessionStorage 不可用時仍然重新載入（無法節流，但 403 本身已經退避）
+  }
+  window.location.reload();
+  return true;
+}
 
 export type BoardStatus = 'loading' | 'ready' | 'error';
 
@@ -47,6 +64,10 @@ export function useBoardData() {
       const abortTimer = setTimeout(() => ac.abort(), REQUEST_TIMEOUT_MS);
       try {
         const res = await fetch('/api/board', { signal: ac.signal });
+        if (res.status === 403 && res.headers.get('x-vercel-mitigated')) {
+          // 被 Vercel 防護要求驗證：重新載入頁面讓瀏覽器自動通過
+          if (reloadForChallenge()) return;
+        }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const body = (await res.json()) as { prizes: Prize[] };
         if (cancelled) return;

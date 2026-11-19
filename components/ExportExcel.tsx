@@ -84,7 +84,7 @@ export const ExportExcel: React.FC<ExportExcelProps> = ({ prizes }) => {
 
     // 生成文件名（包含日期時間）
     const now = new Date();
-    const fileName = `LCy_2025年終尾牙得獎名單_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}.xlsx`;
+    const fileName = `LCy_2026年終尾牙得獎名單_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}.xlsx`;
 
     // 下載文件
     XLSX.writeFile(workbook, fileName);

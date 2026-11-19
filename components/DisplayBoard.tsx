@@ -151,7 +151,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
           <div className="flex items-center gap-2">
             <span className="text-2xl font-black tracking-tighter text-lcy-dark">LCy</span>
             <div className="h-5 w-[1px] bg-gray-300 mx-2"></div>
-            <span className="text-xs font-bold text-gray-500 tracking-wide">YEAR END PARTY 2025</span>
+            <span className="text-xs font-bold text-gray-500 tracking-wide">YEAR END PARTY 2026</span>
           </div>
 
           {/* Desktop Tabs */}
@@ -174,7 +174,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
           <div className="flex items-center gap-2 mb-3 justify-center">
             <span className="text-lg font-black tracking-tighter text-lcy-dark">LCy</span>
             <div className="h-4 w-[1px] bg-gray-300 mx-1"></div>
-            <span className="text-[10px] font-bold text-gray-500 tracking-wide">YEAR END PARTY 2025</span>
+            <span className="text-[10px] font-bold text-gray-500 tracking-wide">YEAR END PARTY 2026</span>
           </div>
 
           {/* Mobile Tabs - 兩排網格布局 */}
@@ -435,7 +435,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                 </h2>
                 <div className="w-full min-w-[300px] h-[1px] bg-gray-500 mb-2"></div>
                 <p className="text-gray-400 text-xs font-light">
-                  © 2025 LCy All Rights Reserved.
+                  © 2026 LCy All Rights Reserved.
                 </p>
             </div>
         </div>
