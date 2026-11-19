@@ -352,13 +352,23 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                       {/* Left Section: Prize Info with Background Image */}
                       <div className="md:w-[320px] relative shrink-0 overflow-hidden flex flex-col justify-center p-5 group">
                          {/* Background Image & Overlay */}
-                         <div className="absolute inset-0 z-0">
+                         {/* 實拍商品照（/prizes/）完整顯示在淺灰底上，不論卡片扁或高都看得到整個商品；
+                             禮券等其他圖片維持滿版裁切 */}
+                         <div className={`absolute inset-0 z-0 ${prize.image.startsWith('/prizes/') ? 'bg-[#eeeeee]' : ''}`}>
                             <img
                               src={prize.image}
                               alt={prize.name}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              className={`w-full h-full transition-transform duration-700 group-hover:scale-105 ${
+                                prize.image.startsWith('/prizes/') ? 'object-contain p-3' : 'object-cover'
+                              }`}
                             />
-                            <div className="absolute inset-0 bg-[#061a52]/85 group-hover:bg-[#061a52]/80 transition-colors"></div>
+                            <div
+                              className={`absolute inset-0 transition-colors ${
+                                prize.image.startsWith('/prizes/')
+                                  ? 'bg-[#061a52]/70 group-hover:bg-[#061a52]/60'
+                                  : 'bg-[#061a52]/85 group-hover:bg-[#061a52]/80'
+                              }`}
+                            ></div>
                          </div>
 
                          {/* Content */}

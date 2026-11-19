@@ -169,20 +169,20 @@ function createVoucherSVG(amount: string): string {
 function getAwardImage(rank: number): string {
   const images: Record<number, string> = {
     // 2026 尾牙獎項（依 尾牙禮品.xlsx）
-    0: createVoucherSVG('GOLD 20g'), // 特獎 幻彩黃金(20公克)
+    0: '/prizes/gold-20g.jpg', // 特獎 幻彩黃金(20公克)
     1: createVoucherSVG('$50,000'), // 頭獎 禮券 $50,000
-    2: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80', // 2獎 iPhone 18 Pro
+    2: '/prizes/iphone-18-pro.jpg', // 2獎 Apple iPhone 18 Pro (256G)
     3: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80', // 3獎 iPad Pro 11吋
     4: createVoucherSVG('$30,000'), // 4獎 禮券 $30,000
     5: createVoucherSVG('$20,000'), // 5獎 禮券 $20,000
-    6: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', // 6獎 Dyson 空氣清淨機 HP11
-    7: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600&q=80', // 7獎 Dyson V10 吸塵器
-    8: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80', // 8獎 Nintendo Switch 2
-    9: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&q=80', // 9獎 Garmin 智慧跑錶
+    6: '/prizes/dyson-hp11.jpg', // 6獎 Dyson 三合一涼暖智能空氣清淨機 HP11
+    7: '/prizes/dyson-v10.jpg', // 7獎 Dyson V10 Konical 雙錐無纏結吸塵器
+    8: '/prizes/switch-2.jpg', // 8獎 Nintendo Switch 2 主機
+    9: '/prizes/garmin-forerunner-170.jpg', // 9獎 Garmin Forerunner 170 Music
     10: createVoucherSVG('$10,000'), // 10獎 禮券 $10,000
-    11: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // 11獎 SONY 藍牙耳機
+    11: '/prizes/sony-wf-l910.jpg', // 11獎 SONY 真無線開放式藍牙耳機 WF-L910
     12: createVoucherSVG('$5,000'), // 12獎 禮券 $5,000
-    13: createVoucherSVG('Sodastream'), // 13獎 Sodastream 氣泡水機
+    13: '/prizes/sodastream-terra.jpg', // 13獎 Sodastream 快扣氣泡水機 TERRA
     95: createVoucherSVG('$8,000'), // 總裁加碼獎 禮券 $8,000
     96: createVoucherSVG('$1,500'), // 溫馨獎 禮券 $1,500
   };
