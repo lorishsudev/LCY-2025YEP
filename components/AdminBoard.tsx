@@ -10,7 +10,7 @@ interface DisplayBoardProps {
   lastWinnerId: string | null;
 }
 
-type TabType = 'special-top' | '2-5' | '6-10' | '11-13' | 'bonus';
+type TabType = 'special-top' | '2-5' | '6-10' | '11-13' | 'bonus' | 'comfort';
 
 interface SearchResult {
   winner: Winner;
@@ -56,7 +56,8 @@ export const AdminBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
       '2-5': sortedPrizes.filter(p => p.rank >= 2 && p.rank <= 5),
       '6-10': sortedPrizes.filter(p => p.rank >= 6 && p.rank <= 10),
       '11-13': sortedPrizes.filter(p => p.rank >= 11 && p.rank <= 13),
-      'bonus': sortedPrizes.filter(p => p.rank >= 95 && p.rank <= 99),
+      'bonus': sortedPrizes.filter(p => p.rank === 95), // 總裁加碼獎
+      'comfort': sortedPrizes.filter(p => p.rank >= 96 && p.rank <= 99), // 溫馨獎
     };
   }, [sortedPrizes]);
 
@@ -138,7 +139,8 @@ export const AdminBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     { id: '2-5', label: '2-5 獎' },
     { id: '6-10', label: '6-10 獎' },
     { id: '11-13', label: '11-13 獎' },
-    { id: 'bonus', label: '加碼／溫馨獎' },
+    { id: 'bonus', label: '加碼獎' },
+    { id: 'comfort', label: '溫馨獎' },
   ];
 
   return (
@@ -191,8 +193,8 @@ export const AdminBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
               </button>
             ))}
 
-            {/* 第二排：2 個按鈕 + 1 個空位 */}
-            {tabs.slice(3, 5).map((tab) => (
+            {/* 第二排：3 個按鈕 */}
+            {tabs.slice(3, 6).map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => scrollToSection(tab.id)}
@@ -201,7 +203,6 @@ export const AdminBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                 {tab.label}
               </button>
             ))}
-            <div></div> {/* 空位保持對齊 */}
           </div>
         </div>
       </nav>

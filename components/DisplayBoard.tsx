@@ -3,13 +3,14 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Prize, Winner } from '../types';
 import { Users, Search, Trophy } from 'lucide-react';
+import { prizeImageFocus } from '../lib/prizeImages';
 
 interface DisplayBoardProps {
   prizes: Prize[];
   lastWinnerId: string | null;
 }
 
-type TabType = 'special-top' | '2-5' | '6-10' | '11-13' | 'bonus';;
+type TabType = 'special-top' | '2-5' | '6-10' | '11-13' | 'bonus' | 'comfort';
 
 interface SearchResult {
   winner: Winner;
@@ -44,6 +45,9 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  // 上方固定區（導覽列 + 標題橫幅）；捲動到指定段落時用實際高度計算位移
+  const fixedTopRef = useRef<HTMLDivElement>(null);
+  const fixedTopHeight = () => fixedTopRef.current?.offsetHeight ?? (window.innerWidth >= 768 ? 267 : 315);
 
   // Sort by rank (0 is highest, then 1-13, then 99)
   const sortedPrizes = useMemo(() => [...prizes].sort((a, b) => a.rank - b.rank), [prizes]);
@@ -55,7 +59,8 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
       '2-5': sortedPrizes.filter(p => p.rank >= 2 && p.rank <= 5),
       '6-10': sortedPrizes.filter(p => p.rank >= 6 && p.rank <= 10),
       '11-13': sortedPrizes.filter(p => p.rank >= 11 && p.rank <= 13),
-      'bonus': sortedPrizes.filter(p => p.rank >= 95 && p.rank <= 99),
+      'bonus': sortedPrizes.filter(p => p.rank === 95), // 總裁加碼獎
+      'comfort': sortedPrizes.filter(p => p.rank >= 96 && p.rank <= 99), // 溫馨獎
     };
   }, [sortedPrizes]);
 
@@ -103,7 +108,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
   const scrollToWinner = (winnerId: string) => {
     const element = document.getElementById(winnerId);
     if (element) {
-      const navHeight = window.innerWidth >= 768 ? 196 : 320;
+      const navHeight = fixedTopHeight();
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - navHeight - 20; // Extra 20px padding
 
@@ -121,7 +126,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     const element = document.getElementById(sectionId);
     if (element) {
       // Account for both fixed nav and fixed header (nav + search section)
-      const navHeight = window.innerWidth >= 768 ? 196 : 320; // md:196px (16+180), mobile:320px (120+200)
+      const navHeight = fixedTopHeight() + 16;
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - navHeight;
 
@@ -137,14 +142,19 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     { id: '2-5', label: '2-5 獎' },
     { id: '6-10', label: '6-10 獎' },
     { id: '11-13', label: '11-13 獎' },
-    { id: 'bonus', label: '加碼／溫馨獎' },
+    { id: 'bonus', label: '加碼獎' },
+    { id: 'comfort', label: '溫馨獎' },
   ];
 
   return (
     <div className="min-h-screen bg-slate-50 text-lcy-slate font-sans">
 
-      {/* Navigation Bar - Fixed positioning for Safari compatibility */}
-      <nav className="bg-white border-b border-gray-200 fixed top-0 left-0 right-0 z-50 shadow-sm">
+      {/* 固定在上方的導覽列 + 標題橫幅（同一個容器，高度自動銜接）
+          手機：標題橫幅在上、分頁按鈕在下；桌機：導覽列在上、標題橫幅在下 */}
+      <div ref={fixedTopRef} className="fixed top-0 left-0 right-0 z-50 flex flex-col">
+
+      {/* Navigation Bar */}
+      <nav className="order-2 md:order-1 relative z-0 bg-white border-b border-gray-200 shadow-sm">
         {/* Desktop Layout - 保持不變 */}
         <div className="hidden md:flex max-w-7xl mx-auto px-4 h-16 items-center justify-between">
           {/* Logo Area */}
@@ -190,8 +200,8 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
               </button>
             ))}
 
-            {/* 第二排：2 個按鈕 + 1 個空位 */}
-            {tabs.slice(3, 5).map((tab) => (
+            {/* 第二排：3 個按鈕 */}
+            {tabs.slice(3, 6).map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => scrollToSection(tab.id)}
@@ -200,16 +210,13 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                 {tab.label}
               </button>
             ))}
-            <div></div> {/* 空位保持對齊 */}
           </div>
         </div>
       </nav>
 
-      {/* Spacer for fixed navigation - Different heights for mobile/desktop */}
-      <div className="h-[146px] md:h-16"></div>
-
       {/* Hero / Title Section - Fixed at top（2026 主視覺：榮聚先新・催化未來） */}
-      <header className="yep-hero py-4 md:py-5 px-4 text-center fixed top-[146px] md:top-16 left-0 right-0 z-40 shadow-lg shadow-blue-900/30">
+      {/* relative z-10：搜尋結果往下展開時要蓋在分頁按鈕上方 */}
+      <header className="yep-hero order-1 md:order-2 relative z-10 py-4 md:py-5 px-4 text-center shadow-lg shadow-blue-900/30">
         <div className="yep-hero-bg" aria-hidden="true">
           <div className="yep-hero-grid"></div>
         </div>
@@ -324,8 +331,10 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
         </div>
       </header>
 
-      {/* Spacer for fixed header */}
-      <div className="h-[180px] md:h-[216px]"></div>
+      </div>
+
+      {/* Spacer for the fixed nav + header (mobile ≈ 146 + 169, desktop ≈ 64 + 203) */}
+      <div className="h-[326px] md:h-[280px]"></div>
 
       {/* Main Content List */}
       <main className="flex-grow px-4 py-6 max-w-7xl mx-auto w-full">
@@ -352,21 +361,20 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                       {/* Left Section: Prize Info with Background Image */}
                       <div className="md:w-[320px] relative shrink-0 overflow-hidden flex flex-col justify-center p-5 group">
                          {/* Background Image & Overlay */}
-                         {/* 實拍商品照（/prizes/）完整顯示在淺灰底上，不論卡片扁或高都看得到整個商品；
-                             禮券等其他圖片維持滿版裁切 */}
-                         <div className={`absolute inset-0 z-0 ${prize.image.startsWith('/prizes/') ? 'bg-[#eeeeee]' : ''}`}>
+                         {/* 獎品圖滿版填滿卡片；實拍照依 lib/prizeImages.ts 的對焦位置裁切 */}
+                         <div className="absolute inset-0 z-0">
                             <img
                               src={prize.image}
                               alt={prize.name}
-                              className={`w-full h-full transition-transform duration-700 group-hover:scale-105 ${
-                                prize.image.startsWith('/prizes/') ? 'object-contain p-3' : 'object-cover'
-                              }`}
+                              style={{ objectPosition: prizeImageFocus(prize.image) }}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
+                            {/* 實拍照：左深右淺的漸層遮罩，左側文字清楚、右側商品透出；禮券等維持均勻深色 */}
                             <div
-                              className={`absolute inset-0 transition-colors ${
+                              className={`absolute inset-0 transition-opacity group-hover:opacity-90 ${
                                 prize.image.startsWith('/prizes/')
-                                  ? 'bg-[#061a52]/70 group-hover:bg-[#061a52]/60'
-                                  : 'bg-[#061a52]/85 group-hover:bg-[#061a52]/80'
+                                  ? 'bg-gradient-to-r from-[#061a52]/90 via-[#061a52]/65 to-[#061a52]/25'
+                                  : 'bg-[#061a52]/85'
                               }`}
                             ></div>
                          </div>
