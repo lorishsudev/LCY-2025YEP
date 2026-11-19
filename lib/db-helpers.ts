@@ -173,32 +173,31 @@ function createVoucherSVG(amount: string): string {
  */
 function getAwardImage(rank: number): string {
   const images: Record<number, string> = {
-    0: createVoucherSVG('$100,000'), // 特獎禮券 $100,000
-    1: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600&q=80', // SHARP 電視
-    2: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80', // MacBook Air
-    3: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80', // iPad Pro
-    4: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80', // iPhone 17
-    5: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600&q=80', // ECOVACS 掃地機器人
-    6: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80', // Nintendo Switch 2 (6獎-1)
-    7: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80', // Nintendo Switch 2 (6獎-2)
-    8: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&q=80', // Apple Watch (7獎)
-    9: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', // Dyson 空氣清淨機 (8獎)
-    10: createVoucherSVG('$10,000'), // 9獎-1 禮券 $10,000
-    11: createVoucherSVG('$10,000'), // 9獎-2 禮券 $10,000
-    12: createVoucherSVG('$10,000'), // 9獎-3 禮券 $10,000
-    13: 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=600&q=80', // 飛利浦氣炸鍋 (10獎)
-    14: createVoucherSVG('$5,000'), // 11獎-1 禮券 $5,000
-    15: createVoucherSVG('$5,000'), // 11獎-2 禮券 $5,000
-    16: createVoucherSVG('$5,000'), // 11獎-3 禮券 $5,000
-    17: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80', // Panasonic 吹風機 (12獎-1)
-    18: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80', // Panasonic 吹風機 (12獎-2)
-    19: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // AirPods 4 (13獎-1)
-    20: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // AirPods 4 (13獎-2)
-    95: createVoucherSVG('$10,000'), // 總裁現金加碼獎 禮券 $10,000
-    96: createVoucherSVG('$3,000'), // 加碼獎-1 禮券 $3,000
-    97: createVoucherSVG('$3,000'), // 加碼獎-2 禮券 $3,000
-    98: createVoucherSVG('$3,000'), // 加碼獎-3 禮券 $3,000
-    99: createVoucherSVG('$3,000'), // 加碼獎-4 禮券 $3,000
+    // 2026 尾牙獎項（依 尾牙禮品.xlsx）
+    0: createVoucherSVG('GOLD 20g'), // 特獎 幻彩黃金(20公克)
+    1: createVoucherSVG('$50,000'), // 頭獎 禮券 $50,000
+    2: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80', // 2獎 iPhone 18 Pro
+    3: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80', // 3獎 iPad Pro 11吋
+    4: createVoucherSVG('$30,000'), // 4獎 禮券 $30,000
+    5: createVoucherSVG('$20,000'), // 5獎 禮券 $20,000
+    6: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', // 6獎 Dyson 空氣清淨機 HP11
+    7: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600&q=80', // 7獎 Dyson V10 吸塵器
+    8: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80', // 8獎 Nintendo Switch 2
+    9: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&q=80', // 9獎 Garmin 智慧跑錶
+    10: createVoucherSVG('$10,000'), // 10獎 禮券 $10,000
+    11: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // 11獎-1 SONY 藍牙耳機
+    12: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // 11獎-2 SONY 藍牙耳機
+    13: createVoucherSVG('$5,000'), // 12獎-1 禮券 $5,000
+    14: createVoucherSVG('$5,000'), // 12獎-2 禮券 $5,000
+    15: createVoucherSVG('$5,000'), // 12獎-3 禮券 $5,000
+    16: createVoucherSVG('$5,000'), // 12獎-4 禮券 $5,000
+    17: createVoucherSVG('Sodastream'), // 13獎-1 Sodastream 氣泡水機
+    18: createVoucherSVG('Sodastream'), // 13獎-2 Sodastream 氣泡水機
+    95: createVoucherSVG('$8,000'), // 總裁加碼獎 禮券 $8,000
+    96: createVoucherSVG('$1,500'), // 溫馨獎-1 禮券 $1,500
+    97: createVoucherSVG('$1,500'), // 溫馨獎-2 禮券 $1,500
+    98: createVoucherSVG('$1,500'), // 溫馨獎-3 禮券 $1,500
+    99: createVoucherSVG('$1,500'), // 溫馨獎-4 禮券 $1,500
   };
 
   return images[rank] || createVoucherSVG('Prize');
