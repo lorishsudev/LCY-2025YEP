@@ -55,7 +55,7 @@ export const AdminBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
       'special-top': sortedPrizes.filter(p => p.rank === 0 || p.rank === 1),
       '2-5': sortedPrizes.filter(p => p.rank >= 2 && p.rank <= 5),
       '6-10': sortedPrizes.filter(p => p.rank >= 6 && p.rank <= 10),
-      '11-13': sortedPrizes.filter(p => p.rank >= 11 && p.rank <= 18),
+      '11-13': sortedPrizes.filter(p => p.rank >= 11 && p.rank <= 13),
       'bonus': sortedPrizes.filter(p => p.rank >= 95 && p.rank <= 99),
     };
   }, [sortedPrizes]);

@@ -185,19 +185,11 @@ function getAwardImage(rank: number): string {
     8: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80', // 8獎 Nintendo Switch 2
     9: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&q=80', // 9獎 Garmin 智慧跑錶
     10: createVoucherSVG('$10,000'), // 10獎 禮券 $10,000
-    11: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // 11獎-1 SONY 藍牙耳機
-    12: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // 11獎-2 SONY 藍牙耳機
-    13: createVoucherSVG('$5,000'), // 12獎-1 禮券 $5,000
-    14: createVoucherSVG('$5,000'), // 12獎-2 禮券 $5,000
-    15: createVoucherSVG('$5,000'), // 12獎-3 禮券 $5,000
-    16: createVoucherSVG('$5,000'), // 12獎-4 禮券 $5,000
-    17: createVoucherSVG('Sodastream'), // 13獎-1 Sodastream 氣泡水機
-    18: createVoucherSVG('Sodastream'), // 13獎-2 Sodastream 氣泡水機
+    11: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&q=80', // 11獎 SONY 藍牙耳機
+    12: createVoucherSVG('$5,000'), // 12獎 禮券 $5,000
+    13: createVoucherSVG('Sodastream'), // 13獎 Sodastream 氣泡水機
     95: createVoucherSVG('$8,000'), // 總裁加碼獎 禮券 $8,000
-    96: createVoucherSVG('$1,500'), // 溫馨獎-1 禮券 $1,500
-    97: createVoucherSVG('$1,500'), // 溫馨獎-2 禮券 $1,500
-    98: createVoucherSVG('$1,500'), // 溫馨獎-3 禮券 $1,500
-    99: createVoucherSVG('$1,500'), // 溫馨獎-4 禮券 $1,500
+    96: createVoucherSVG('$1,500'), // 溫馨獎 禮券 $1,500
   };
 
   return images[rank] || createVoucherSVG('Prize');
