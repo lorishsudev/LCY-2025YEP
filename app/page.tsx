@@ -163,6 +163,35 @@ export default function Home() {
     // Initial load
     loadPrizes();
 
+    // Realtime 事件可能一次湧入上千筆（批次新增/刪除得獎者），
+    // 每筆都整批重讀會塞爆資料庫。改為 debounce：最後一次變動後 1 秒才重讀，
+    // 且同一時間只跑一次載入，載入中又有變動則讀完再補讀一次。
+    let reloadTimer: ReturnType<typeof setTimeout> | null = null;
+    let reloadInFlight = false;
+    let reloadPending = false;
+
+    const runReload = async () => {
+      if (reloadInFlight) {
+        reloadPending = true;
+        return;
+      }
+      reloadInFlight = true;
+      try {
+        await loadPrizes();
+      } finally {
+        reloadInFlight = false;
+        if (reloadPending) {
+          reloadPending = false;
+          scheduleReload();
+        }
+      }
+    };
+
+    const scheduleReload = () => {
+      if (reloadTimer) clearTimeout(reloadTimer);
+      reloadTimer = setTimeout(runReload, 1000);
+    };
+
     // Setup realtime subscriptions only if Supabase is configured
     if (isSupabaseConfigured && supabase) {
       console.log('🔴 Setting up Realtime subscriptions...');
@@ -179,7 +208,7 @@ export default function Home() {
           },
           (payload) => {
             console.log('📢 Award change detected:', payload);
-            loadPrizes(); // Reload all prizes when award changes
+            scheduleReload(); // Debounced reload when award changes
           }
         )
         .subscribe((status) => {
@@ -198,7 +227,7 @@ export default function Home() {
           },
           (payload) => {
             console.log('🏆 Winner change detected:', payload);
-            loadPrizes(); // Reload all prizes when winner changes
+            scheduleReload(); // Debounced reload when winner changes
           }
         )
         .subscribe((status) => {
@@ -208,6 +237,7 @@ export default function Home() {
       // Cleanup subscriptions on unmount
       return () => {
         console.log('🔴 Cleaning up Realtime subscriptions...');
+        if (reloadTimer) clearTimeout(reloadTimer);
         if (supabase) {
           supabase.removeChannel(awardsChannel);
           supabase.removeChannel(winnersChannel);
