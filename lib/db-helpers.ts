@@ -3,62 +3,57 @@ import { Prize, Winner, Employee } from '../types';
 import { LotteryAward, LotteryWinner } from './database.types';
 
 /**
- * Fetch all prizes with their winners from the database
+ * Fetch all prizes with their winners from the database.
+ * 失敗時直接拋出錯誤（不回傳空陣列），避免 /api/board 把「讀取失敗」快取成「沒有資料」。
  */
-export async function fetchPrizesWithWinners(): Promise<Prize[]> {
-  // Return empty array if Supabase is not configured
+export async function fetchBoardPrizes(): Promise<Prize[]> {
   if (!isSupabaseConfigured || !supabase) {
-    return [];
+    throw new Error('Supabase not configured');
   }
 
-  try {
-    // Fetch all awards
-    const { data: awards, error: awardsError } = await supabase
-      .from('lottery_award')
-      .select('*')
-      .order('id', { ascending: true });
+  // Fetch all awards
+  const { data: awards, error: awardsError } = await supabase
+    .from('lottery_award')
+    .select('*')
+    .order('id', { ascending: true });
 
-    if (awardsError) throw awardsError;
+  if (awardsError) throw awardsError;
 
-    // Fetch all winners
-    const { data: winners, error: winnersError } = await supabase
-      .from('lottery_winner')
-      .select('*')
-      .order('won_at', { ascending: true });
+  // Fetch all winners
+  const { data: winners, error: winnersError } = await supabase
+    .from('lottery_winner')
+    .select('*')
+    .order('won_at', { ascending: true });
 
-    if (winnersError) throw winnersError;
+  if (winnersError) throw winnersError;
 
-    // Map database data to Prize type
-    const prizes: Prize[] = (awards || []).map((award: LotteryAward) => {
-      const awardWinners = (winners || [])
-        .filter((w: LotteryWinner) => w.award_id === award.id)
-        .map((w: LotteryWinner) => ({
-          id: w.emp_id,
-          name: `${w.emp_cname || w.emp_ename || 'Unknown'} (${w.emp_id})`,
-          department: w.emp_factory || 'General',
-          wonAt: new Date(w.won_at).getTime(),
-        }));
+  // Map database data to Prize type
+  const prizes: Prize[] = (awards || []).map((award: LotteryAward) => {
+    const awardWinners = (winners || [])
+      .filter((w: LotteryWinner) => w.award_id === award.id)
+      .map((w: LotteryWinner) => ({
+        id: w.emp_id,
+        name: `${w.emp_cname || w.emp_ename || 'Unknown'} (${w.emp_id})`,
+        department: w.emp_factory || 'General',
+        wonAt: new Date(w.won_at).getTime(),
+      }));
 
-      // Convert award ID to rank number
-      const rank = convertAwardIdToRank(award.id);
+    // Convert award ID to rank number
+    const rank = convertAwardIdToRank(award.id);
 
-      return {
-        id: award.id,
-        name: award.award,
-        description: getAwardDescription(award.award, rank),
-        image: getAwardImage(rank),
-        totalCount: award.num,
-        unitPrice: award.unit_price,
-        rank,
-        winners: awardWinners,
-      };
-    });
+    return {
+      id: award.id,
+      name: award.award,
+      description: getAwardDescription(award.award, rank),
+      image: getAwardImage(rank),
+      totalCount: award.num,
+      unitPrice: award.unit_price,
+      rank,
+      winners: awardWinners,
+    };
+  });
 
-    return prizes;
-  } catch (error) {
-    console.error('Error fetching prizes:', error);
-    return [];
-  }
+  return prizes;
 }
 
 /**
