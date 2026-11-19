@@ -8,6 +8,7 @@
 export const PRIZE_IMAGE_FOCUS: Record<string, string> = {
   '/prizes/gold-20g.jpg': '50% 42%', // 金條本體
   '/prizes/iphone-18-pro.jpg': '35% 22%', // 背面三鏡頭
+  '/prizes/ipad-pro-11.jpg': '50% 45%', // 機身與彩色邊框（原圖上方標語已裁掉）
   '/prizes/dyson-hp11.jpg': '50% 22%', // 上半部環形出風口
   '/prizes/dyson-v10.jpg': '50% 22%', // 機身與集塵筒
   '/prizes/switch-2.jpg': '12% 50%', // 左側 Joy-Con 搖桿

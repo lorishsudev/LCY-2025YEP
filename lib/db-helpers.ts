@@ -172,7 +172,7 @@ function getAwardImage(rank: number): string {
     0: '/prizes/gold-20g.jpg', // 特獎 幻彩黃金(20公克)
     1: createVoucherSVG('$50,000'), // 頭獎 禮券 $50,000
     2: '/prizes/iphone-18-pro.jpg', // 2獎 Apple iPhone 18 Pro (256G)
-    3: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80', // 3獎 iPad Pro 11吋
+    3: '/prizes/ipad-pro-11.jpg', // 3獎 11吋 iPad Pro Wi-Fi 256GB
     4: createVoucherSVG('$30,000'), // 4獎 禮券 $30,000
     5: createVoucherSVG('$20,000'), // 5獎 禮券 $20,000
     6: '/prizes/dyson-hp11.jpg', // 6獎 Dyson 三合一涼暖智能空氣清淨機 HP11

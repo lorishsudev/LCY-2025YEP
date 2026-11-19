@@ -150,11 +150,18 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     <div className="min-h-screen bg-slate-50 text-lcy-slate font-sans">
 
       {/* 固定在上方的導覽列 + 標題橫幅（同一個容器，高度自動銜接）
-          手機：標題橫幅在上、分頁按鈕在下；桌機：導覽列在上、標題橫幅在下 */}
+          手機：Logo 列 → 標題橫幅 → 分頁按鈕；桌機：導覽列 → 標題橫幅 */}
       <div ref={fixedTopRef} className="fixed top-0 left-0 right-0 z-50 flex flex-col">
 
+      {/* 手機版 Logo 列：放在最上方（桌機的 Logo 在導覽列內） */}
+      <div className="md:hidden order-1 relative z-0 bg-white flex items-center gap-2 justify-center py-2.5 border-b border-gray-100">
+        <span className="text-lg font-black tracking-tighter text-lcy-dark">LCy</span>
+        <div className="h-4 w-[1px] bg-gray-300 mx-1"></div>
+        <span className="text-[10px] font-bold text-yep-electric tracking-wide">YEAR END PARTY 2026</span>
+      </div>
+
       {/* Navigation Bar */}
-      <nav className="order-2 md:order-1 relative z-0 bg-white border-b border-gray-200 shadow-sm">
+      <nav className="order-3 md:order-1 relative z-0 bg-white border-b border-gray-200 shadow-sm">
         {/* Desktop Layout - 保持不變 */}
         <div className="hidden md:flex max-w-7xl mx-auto px-4 h-16 items-center justify-between">
           {/* Logo Area */}
@@ -180,13 +187,6 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
 
         {/* Mobile Layout - 兩排按鈕設計 */}
         <div className="md:hidden px-3 py-3">
-          {/* Logo */}
-          <div className="flex items-center gap-2 mb-3 justify-center">
-            <span className="text-lg font-black tracking-tighter text-lcy-dark">LCy</span>
-            <div className="h-4 w-[1px] bg-gray-300 mx-1"></div>
-            <span className="text-[10px] font-bold text-yep-electric tracking-wide">YEAR END PARTY 2026</span>
-          </div>
-
           {/* Mobile Tabs - 兩排網格布局 */}
           <div className="grid grid-cols-3 gap-2">
             {/* 第一排：3 個按鈕 */}
@@ -216,7 +216,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
 
       {/* Hero / Title Section - Fixed at top（2026 主視覺：榮聚先新・催化未來） */}
       {/* relative z-10：搜尋結果往下展開時要蓋在分頁按鈕上方 */}
-      <header className="yep-hero order-1 md:order-2 relative z-10 py-4 md:py-5 px-4 text-center shadow-lg shadow-blue-900/30">
+      <header className="yep-hero order-2 md:order-2 relative z-10 py-4 md:py-5 px-4 text-center shadow-lg shadow-blue-900/30">
         <div className="yep-hero-bg" aria-hidden="true">
           <div className="yep-hero-grid"></div>
         </div>
