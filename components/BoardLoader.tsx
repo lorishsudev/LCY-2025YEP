@@ -19,7 +19,7 @@ export const BoardLoader: React.FC<BoardLoaderProps> = ({ children }) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="text-center px-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lcy-yellow mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yep-electric mx-auto mb-4"></div>
           <p className="text-gray-600">
             {status === 'loading' ? '載入中...' : '連線忙碌中，正在自動重試...'}
           </p>

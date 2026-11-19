@@ -52,6 +52,116 @@ body {
   background-color: var(--lcy-slate);
 }
 
+/* ==========================================================
+   2026 主視覺「榮聚新勢・催化未來」— 深藍科技風點綴
+   ========================================================== */
+:root {
+  --yep-navy: #050f3a;
+  --yep-navy-2: #0a2272;
+  --yep-blue: #2563ff;
+  --yep-electric: #3b9bff;
+  --yep-cyan: #5ad1ff;
+}
+
+.text-yep-electric { color: var(--yep-electric); }
+.border-yep-electric { border-color: var(--yep-electric); }
+
+/* 標題橫幅：深藍漸層 + 中央光暈 + 兩側光線 + 底部透視網格 */
+/* 注意：不要在這裡設定 position，標題橫幅本身用 Tailwind 的 fixed 固定在上方 */
+.yep-hero {
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 55% 70% at 50% 108%, rgba(90, 209, 255, 0.55), transparent 70%),
+    radial-gradient(ellipse 40% 60% at 50% 0%, rgba(37, 99, 255, 0.35), transparent 75%),
+    linear-gradient(180deg, var(--yep-navy) 0%, var(--yep-navy-2) 100%);
+}
+
+/* 兩側斜向光線 */
+.yep-hero::before,
+.yep-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 38%;
+  pointer-events: none;
+  opacity: 0.7;
+  background:
+    repeating-linear-gradient(
+      var(--yep-streak-angle),
+      transparent 0 14px,
+      rgba(90, 209, 255, 0.18) 14px 16px,
+      transparent 16px 34px,
+      rgba(168, 120, 255, 0.14) 34px 35px
+    );
+  mask-image: linear-gradient(var(--yep-streak-fade), #000 0%, transparent 90%);
+  -webkit-mask-image: linear-gradient(var(--yep-streak-fade), #000 0%, transparent 90%);
+}
+.yep-hero::before { left: 0; --yep-streak-angle: 105deg; --yep-streak-fade: to right; }
+.yep-hero::after { right: 0; --yep-streak-angle: 75deg; --yep-streak-fade: to left; }
+
+/* 底部透視網格 */
+.yep-hero-grid {
+  position: absolute;
+  left: -25%;
+  right: -25%;
+  bottom: -1px;
+  height: 55%;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(90, 209, 255, 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90, 209, 255, 0.35) 1px, transparent 1px);
+  background-size: 48px 22px;
+  transform: perspective(220px) rotateX(55deg);
+  transform-origin: bottom center;
+  mask-image: linear-gradient(to top, #000 0%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 85%);
+}
+
+/* 主標題：白到淡藍漸層字 + 光暈，微斜體呈現速度感 */
+.yep-title {
+  display: inline-block;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  transform: skewX(-6deg);
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 45%, #b9dcff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 10px rgba(59, 155, 255, 0.85)) drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+}
+
+/* 標題下方的金色光束點綴（呼應主視覺右側光暈） */
+.yep-flare {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 196, 92, 0.9) 50%, transparent);
+  box-shadow: 0 0 10px rgba(255, 196, 92, 0.8);
+}
+
+/* 兩側細線（用於副標題左右） */
+.yep-rule {
+  height: 1px;
+  flex: 1 1 0;
+  max-width: 120px;
+}
+.yep-rule-left { background: linear-gradient(90deg, transparent, rgba(185, 220, 255, 0.85)); }
+.yep-rule-right { background: linear-gradient(90deg, rgba(185, 220, 255, 0.85), transparent); }
+
+/* 段落標題底線：電光藍漸層 */
+.yep-section-rule {
+  height: 2px;
+  background: linear-gradient(90deg, var(--yep-blue), var(--yep-cyan) 45%, transparent);
+  box-shadow: 0 0 8px rgba(59, 155, 255, 0.45);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .yep-hero-grid { animation: yep-grid-move 6s linear infinite; }
+  @keyframes yep-grid-move {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 0 22px, 0 0; }
+  }
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

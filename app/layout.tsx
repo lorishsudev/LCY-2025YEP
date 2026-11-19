@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'LCy 2026 Year End Party',
-  description: '榮耀時刻 · 得獎名單 - 創新永續,共創未來',
+  description: '李長榮集團 2026 年終尾牙盛會 · 榮聚新勢・催化未來 · 得獎名單',
 };
 
 export default function RootLayout({

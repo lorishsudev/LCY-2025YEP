@@ -151,7 +151,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
           <div className="flex items-center gap-2">
             <span className="text-2xl font-black tracking-tighter text-lcy-dark">LCy</span>
             <div className="h-5 w-[1px] bg-gray-300 mx-2"></div>
-            <span className="text-xs font-bold text-gray-500 tracking-wide">YEAR END PARTY 2026</span>
+            <span className="text-xs font-bold text-yep-electric tracking-wide">YEAR END PARTY 2026</span>
           </div>
 
           {/* Desktop Tabs */}
@@ -174,7 +174,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
           <div className="flex items-center gap-2 mb-3 justify-center">
             <span className="text-lg font-black tracking-tighter text-lcy-dark">LCy</span>
             <div className="h-4 w-[1px] bg-gray-300 mx-1"></div>
-            <span className="text-[10px] font-bold text-gray-500 tracking-wide">YEAR END PARTY 2026</span>
+            <span className="text-[10px] font-bold text-yep-electric tracking-wide">YEAR END PARTY 2026</span>
           </div>
 
           {/* Mobile Tabs - 兩排網格布局 */}
@@ -206,20 +206,34 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
       </nav>
 
       {/* Spacer for fixed navigation - Different heights for mobile/desktop */}
-      <div className="h-[120px] md:h-16"></div>
+      <div className="h-[146px] md:h-16"></div>
 
-      {/* Hero / Title Section - Fixed at top */}
-      <header className="bg-white py-6 px-4 text-center border-b border-gray-100 fixed top-[120px] md:top-16 left-0 right-0 z-40 shadow-sm">
-        <div className="max-w-4xl mx-auto space-y-4">
-           <h1 className="text-2xl md:text-3xl font-black text-lcy-dark tracking-tight">
-             榮耀時刻 · 得獎名單
+      {/* Hero / Title Section - Fixed at top（2026 主視覺：榮聚新勢・催化未來） */}
+      <header className="yep-hero py-4 md:py-5 px-4 text-center fixed top-[146px] md:top-16 left-0 right-0 z-40 shadow-lg shadow-blue-900/30">
+        <div className="yep-hero-grid" aria-hidden="true"></div>
+        <div className="relative max-w-4xl mx-auto">
+           {/* 李長榮集團 · 2026 年終尾牙盛會 */}
+           <div className="flex items-center justify-center gap-3 text-[11px] md:text-sm font-semibold tracking-[0.3em] text-blue-100">
+             <span className="yep-rule yep-rule-left" aria-hidden="true"></span>
+             <span className="whitespace-nowrap">李長榮集團 · 2026 年終尾牙盛會</span>
+             <span className="yep-rule yep-rule-right" aria-hidden="true"></span>
+           </div>
+
+           {/* 主標題 */}
+           <h1 className="mt-1.5 md:mt-2 text-[28px] leading-tight md:text-5xl">
+             <span className="yep-title">榮聚新勢・催化未來</span>
            </h1>
-           <p className="text-gray-500 text-sm max-w-2xl mx-auto leading-relaxed font-light">
-             創新永續，共創未來。感謝每一位夥伴的傑出貢獻。
-           </p>
+           <div className="yep-flare w-40 md:w-64 mx-auto mt-1" aria-hidden="true"></div>
+
+           {/* 英文副標 */}
+           <div className="mt-1.5 flex items-center justify-center gap-3 text-[9px] md:text-[11px] italic font-semibold tracking-[0.45em] text-blue-200/90">
+             <span className="yep-rule yep-rule-left" aria-hidden="true"></span>
+             <span className="whitespace-nowrap">CATALYZING THE FUTURE</span>
+             <span className="yep-rule yep-rule-right" aria-hidden="true"></span>
+           </div>
 
            {/* Search Input with Dropdown Results */}
-           <div className="max-w-md mx-auto relative" ref={searchRef}>
+           <div className="max-w-md mx-auto relative mt-3 md:mt-4" ref={searchRef}>
              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 z-10" />
              <input
                type="text"
@@ -230,7 +244,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                  setShowResults(true);
                }}
                onFocus={() => searchQuery && setShowResults(true)}
-               className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lcy-yellow focus:border-transparent text-sm"
+               className="w-full pl-10 pr-10 py-2.5 border border-blue-300/40 bg-white/95 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent text-sm text-lcy-dark shadow-[0_0_18px_rgba(59,155,255,0.35)]"
              />
              {searchQuery && (
                <button
@@ -309,7 +323,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
       </header>
 
       {/* Spacer for fixed header */}
-      <div className="h-[200px] md:h-[180px]"></div>
+      <div className="h-[180px] md:h-[216px]"></div>
 
       {/* Main Content List */}
       <main className="flex-grow px-4 py-6 max-w-7xl mx-auto w-full">
@@ -319,10 +333,11 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
             if (!groupPrizes || groupPrizes.length === 0) return null;
 
             return (
-              <section key={tab.id} id={tab.id} className="scroll-mt-[340px] md:scroll-mt-[220px]">
+              <section key={tab.id} id={tab.id} className="scroll-mt-[340px] md:scroll-mt-[292px]">
                 {/* Section Header */}
-                <div className="mb-4 pb-2 border-b-2 border-lcy-yellow">
-                  <h2 className="text-xl font-bold text-lcy-dark">{tab.label}</h2>
+                <div className="mb-4">
+                  <h2 className="text-xl font-bold text-lcy-dark pb-2">{tab.label}</h2>
+                  <div className="yep-section-rule" aria-hidden="true"></div>
                 </div>
 
                 {/* Prizes in this section */}
@@ -341,7 +356,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                               alt={prize.name}
                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
-                            <div className="absolute inset-0 bg-slate-900/85 group-hover:bg-slate-900/80 transition-colors"></div>
+                            <div className="absolute inset-0 bg-[#061a52]/85 group-hover:bg-[#061a52]/80 transition-colors"></div>
                          </div>
 
                          {/* Content */}
@@ -361,7 +376,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                               <div className="w-[1px] h-3 bg-gray-600"></div>
                               <div className="flex items-baseline gap-1">
                                 <span className="uppercase text-[9px] text-gray-400">Awarded</span>
-                                <span className="text-base text-lcy-yellow">{prize.winners.length}</span>
+                                <span className="text-base text-sky-300">{prize.winners.length}</span>
                               </div>
                             </div>
                          </div>
@@ -381,7 +396,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
                                   className={`flex flex-col gap-1 rounded px-3 py-3 transition-all ${
                                     isHighlighted
                                       ? 'bg-lcy-yellow border-2 border-lcy-yellow shadow-md'
-                                      : 'bg-gray-50 border border-gray-100 hover:border-lcy-yellow/50'
+                                      : 'bg-gray-50 border border-gray-100 hover:border-sky-400/60'
                                   }`}
                                 >
                                   <div className="font-bold text-lcy-dark text-base leading-tight">
@@ -420,11 +435,14 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
       </main>
 
       {/* Corporate Footer - New Design */}
-      <footer className="relative bg-[#333333] h-32 overflow-hidden mt-auto">
+      <footer className="relative bg-[#050f3a] h-32 overflow-hidden mt-auto">
         {/* Yellow Diagonal Shape */}
         <div
-          className="absolute top-0 left-0 h-full w-[35%] bg-lcy-yellow"
-          style={{ clipPath: 'polygon(0 0, 100% 0, 70% 100%, 0% 100%)' }}
+          className="absolute top-0 left-0 h-full w-[35%]"
+          style={{
+            clipPath: 'polygon(0 0, 100% 0, 70% 100%, 0% 100%)',
+            background: 'linear-gradient(120deg, #2563ff 0%, #3b9bff 55%, #5ad1ff 100%)',
+          }}
         ></div>
 
         {/* Content */}
