@@ -137,7 +137,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     { id: '2-5', label: '2-5 獎' },
     { id: '6-10', label: '6-10 獎' },
     { id: '11-13', label: '11-13 獎' },
-    { id: 'bonus', label: '溫馨獎' },
+    { id: 'bonus', label: '加碼／溫馨獎' },
   ];
 
   return (
