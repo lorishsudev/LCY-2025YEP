@@ -214,7 +214,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
         </div>
       </nav>
 
-      {/* Hero / Title Section - Fixed at top（2026 主視覺：榮聚先新・催化未來） */}
+      {/* Hero / Title Section - Fixed at top（2026 主視覺：榮聚先進・催化未來） */}
       {/* relative z-10：搜尋結果往下展開時要蓋在分頁按鈕上方 */}
       <header className="yep-hero order-2 md:order-2 relative z-10 py-4 md:py-5 px-4 text-center shadow-lg shadow-blue-900/30">
         <div className="yep-hero-bg" aria-hidden="true">
@@ -230,7 +230,7 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
 
            {/* 主標題 */}
            <h1 className="mt-1.5 md:mt-2 text-[28px] leading-tight md:text-5xl">
-             <span className="yep-title">榮聚先新・催化未來</span>
+             <span className="yep-title">榮聚先進・催化未來</span>
            </h1>
            <div className="yep-flare w-40 md:w-64 mx-auto mt-1" aria-hidden="true"></div>
 
