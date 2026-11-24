@@ -168,12 +168,12 @@ function createVoucherSVG(amount: string): string {
  */
 function getAwardImage(rank: number): string {
   const images: Record<number, string> = {
-    // 2026 尾牙獎項（依 尾牙禮品.xlsx）
+    // 2026 尾牙獎項（依 獎品品項_2026.pdf）
     0: '/prizes/gold-20g.jpg', // 特獎 幻彩黃金(20公克)
     1: createVoucherSVG('$50,000'), // 頭獎 禮券 $50,000
     2: '/prizes/iphone-18-pro.jpg', // 2獎 Apple iPhone 18 Pro (256G)
     3: '/prizes/ipad-pro-11.jpg', // 3獎 11吋 iPad Pro Wi-Fi 256GB
-    4: createVoucherSVG('$30,000'), // 4獎 禮券 $30,000
+    4: createVoucherSVG('$35,000'), // 4獎 禮券 $35,000
     5: createVoucherSVG('$20,000'), // 5獎 禮券 $20,000
     6: '/prizes/dyson-hp11.jpg', // 6獎 Dyson 三合一涼暖智能空氣清淨機 HP11
     7: '/prizes/dyson-v10.jpg', // 7獎 Dyson V10 Konical 雙錐無纏結吸塵器
@@ -183,8 +183,8 @@ function getAwardImage(rank: number): string {
     11: '/prizes/sony-wf-l910.jpg', // 11獎 SONY 真無線開放式藍牙耳機 WF-L910
     12: createVoucherSVG('$5,000'), // 12獎 禮券 $5,000
     13: '/prizes/sodastream-terra.jpg', // 13獎 Sodastream 快扣氣泡水機 TERRA
-    95: createVoucherSVG('$8,000'), // 總裁加碼獎 禮券 $8,000
-    96: createVoucherSVG('$1,500'), // 溫馨獎 禮券 $1,500
+    95: createVoucherSVG('$10,000'), // 總裁加碼獎 禮券 $10,000
+    96: createVoucherSVG('$2,500'), // 溫馨獎 禮券 $2,500
   };
 
   return images[rank] || createVoucherSVG('Prize');
