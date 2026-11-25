@@ -137,14 +137,18 @@ export const DisplayBoard: React.FC<DisplayBoardProps> = ({ prizes }) => {
     }
   };
 
-  const tabs: { id: TabType; label: string }[] = [
+  const allTabs: { id: TabType; label: string }[] = [
     { id: 'special-top', label: '特獎/頭獎' },
     { id: '2-5', label: '2-5 獎' },
     { id: '6-10', label: '6-10 獎' },
     { id: '11-13', label: '11-13 獎' },
-    { id: 'bonus', label: '加碼獎' },
     { id: 'comfort', label: '溫馨獎' },
+    { id: 'bonus', label: '加碼獎' }, // 放最後：出現/隱藏時不影響其他按鈕位置
   ];
+  const tabs = allTabs.filter(
+    // 加碼獎是臨時宣布的：還沒有人得獎前，分頁按鈕和段落都不顯示，掃描到第一位後才出現
+    (tab) => tab.id !== 'bonus' || prizeGroups.bonus.some((p) => p.winners.length > 0)
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 text-lcy-slate font-sans">
